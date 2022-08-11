@@ -5,7 +5,6 @@ programa
 	
 	leia(a);
 	leia(b);
-	leia(t3);
 
 	a = 1 + 2 * 3 / b;
 	

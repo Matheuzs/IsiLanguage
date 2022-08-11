@@ -14,6 +14,12 @@ grammar IsiLang;
 	private String _varValue;
 	private IsiSymbolTable symbolTable = new IsiSymbolTable();
 	private IsiSymbol symbol;
+	
+	public void verificaID(String id){
+		if (!symbolTable.exists(id)){
+			throw new IsiSemanticException("Symbol " + id + " not declared");
+		}
+	}
 }
 
 prog	: 'programa' decl bloco 'fimprog;' 
@@ -63,26 +69,28 @@ cmd		: cmdleitura
 		;
 
 cmdleitura	: 'leia' AP
-					 ID { 
-					 	_varName = _input.LT(-1).getText();
-					 	if(!symbolTable.exists(_varName)) {
-					 		throw new IsiSemanticException("Symbol not " + _varName + " declared");
-					 	}
-					 }
+					 ID { verificaID(_input.LT(-1).getText()); }
 					 FP
 					 SC
 			;
 			
-cmdescrita	: 'escreva' AP ID FP SC
+cmdescrita	: 'escreva' AP
+						ID { verificaID(_input.LT(-1).getText()); }
+						FP
+						SC
 			;
 
-cmdattrib	: ID ATTR expr SC
+cmdattrib	: ID { verificaID(_input.LT(-1).getText()); }
+			  ATTR
+			  expr 
+			  SC
 			;
 			
 expr		: termo ( OP termo )*
 			;
 			
-termo		: ID | NUMBER
+termo		: ID { verificaID(_input.LT(-1).getText()); } 
+			| NUMBER
 			;
 
 AP	: '('

@@ -59,6 +59,12 @@ public class IsiLangParser extends Parser {
 		private String _varValue;
 		private IsiSymbolTable symbolTable = new IsiSymbolTable();
 		private IsiSymbol symbol;
+		
+		public void verificaID(String id){
+			if (!symbolTable.exists(id)){
+				throw new IsiSemanticException("Symbol " + id + " not declared");
+			}
+		}
 
 	public IsiLangParser(TokenStream input) {
 		super(input);
@@ -443,12 +449,7 @@ public class IsiLangParser extends Parser {
 			setState(61); match(T__1);
 			setState(62); match(AP);
 			setState(63); match(ID);
-			 
-								 	_varName = _input.LT(-1).getText();
-								 	if(!symbolTable.exists(_varName)) {
-								 		throw new IsiSemanticException("Symbol not " + _varName + " declared");
-								 	}
-								 
+			 verificaID(_input.LT(-1).getText()); 
 			setState(65); match(FP);
 			setState(66); match(SC);
 			}
@@ -492,8 +493,9 @@ public class IsiLangParser extends Parser {
 			setState(68); match(T__5);
 			setState(69); match(AP);
 			setState(70); match(ID);
-			setState(71); match(FP);
-			setState(72); match(SC);
+			 verificaID(_input.LT(-1).getText()); 
+			setState(72); match(FP);
+			setState(73); match(SC);
 			}
 		}
 		catch (RecognitionException re) {
@@ -534,10 +536,11 @@ public class IsiLangParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(74); match(ID);
-			setState(75); match(ATTR);
-			setState(76); expr();
-			setState(77); match(SC);
+			setState(75); match(ID);
+			 verificaID(_input.LT(-1).getText()); 
+			setState(77); match(ATTR);
+			setState(78); expr();
+			setState(79); match(SC);
 			}
 		}
 		catch (RecognitionException re) {
@@ -583,18 +586,18 @@ public class IsiLangParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(79); termo();
-			setState(84);
+			setState(81); termo();
+			setState(86);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==OP) {
 				{
 				{
-				setState(80); match(OP);
-				setState(81); termo();
+				setState(82); match(OP);
+				setState(83); termo();
 				}
 				}
-				setState(86);
+				setState(88);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -631,16 +634,24 @@ public class IsiLangParser extends Parser {
 	public final TermoContext termo() throws RecognitionException {
 		TermoContext _localctx = new TermoContext(_ctx, getState());
 		enterRule(_localctx, 20, RULE_termo);
-		int _la;
 		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(87);
-			_la = _input.LA(1);
-			if ( !(_la==ID || _la==NUMBER) ) {
-			_errHandler.recoverInline(this);
-			}
-			consume();
+			setState(92);
+			switch (_input.LA(1)) {
+			case ID:
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(89); match(ID);
+				 verificaID(_input.LT(-1).getText()); 
+				}
+				break;
+			case NUMBER:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(91); match(NUMBER);
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
 			}
 		}
 		catch (RecognitionException re) {
@@ -655,28 +666,29 @@ public class IsiLangParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\21\\\4\2\t\2\4\3"+
-		"\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13"+
-		"\4\f\t\f\3\2\3\2\3\2\3\2\3\2\3\3\6\3\37\n\3\r\3\16\3 \3\4\3\4\3\4\3\4"+
-		"\3\4\3\4\7\4)\n\4\f\4\16\4,\13\4\3\4\3\4\3\5\3\5\3\5\3\5\5\5\64\n\5\3"+
-		"\6\6\6\67\n\6\r\6\16\68\3\7\3\7\3\7\5\7>\n\7\3\b\3\b\3\b\3\b\3\b\3\b\3"+
-		"\b\3\t\3\t\3\t\3\t\3\t\3\t\3\n\3\n\3\n\3\n\3\n\3\13\3\13\3\13\7\13U\n"+
-		"\13\f\13\16\13X\13\13\3\f\3\f\3\f\2\2\r\2\4\6\b\n\f\16\20\22\24\26\2\3"+
-		"\3\2\17\20W\2\30\3\2\2\2\4\36\3\2\2\2\6\"\3\2\2\2\b\63\3\2\2\2\n\66\3"+
-		"\2\2\2\f=\3\2\2\2\16?\3\2\2\2\20F\3\2\2\2\22L\3\2\2\2\24Q\3\2\2\2\26Y"+
-		"\3\2\2\2\30\31\7\6\2\2\31\32\5\4\3\2\32\33\5\n\6\2\33\34\7\4\2\2\34\3"+
-		"\3\2\2\2\35\37\5\6\4\2\36\35\3\2\2\2\37 \3\2\2\2 \36\3\2\2\2 !\3\2\2\2"+
-		"!\5\3\2\2\2\"#\5\b\5\2#$\7\17\2\2$*\b\4\1\2%&\7\16\2\2&\'\7\17\2\2\')"+
-		"\b\4\1\2(%\3\2\2\2),\3\2\2\2*(\3\2\2\2*+\3\2\2\2+-\3\2\2\2,*\3\2\2\2-"+
-		".\7\13\2\2.\7\3\2\2\2/\60\7\5\2\2\60\64\b\5\1\2\61\62\7\b\2\2\62\64\b"+
-		"\5\1\2\63/\3\2\2\2\63\61\3\2\2\2\64\t\3\2\2\2\65\67\5\f\7\2\66\65\3\2"+
-		"\2\2\678\3\2\2\28\66\3\2\2\289\3\2\2\29\13\3\2\2\2:>\5\16\b\2;>\5\20\t"+
-		"\2<>\5\22\n\2=:\3\2\2\2=;\3\2\2\2=<\3\2\2\2>\r\3\2\2\2?@\7\7\2\2@A\7\t"+
-		"\2\2AB\7\17\2\2BC\b\b\1\2CD\7\n\2\2DE\7\13\2\2E\17\3\2\2\2FG\7\3\2\2G"+
-		"H\7\t\2\2HI\7\17\2\2IJ\7\n\2\2JK\7\13\2\2K\21\3\2\2\2LM\7\17\2\2MN\7\r"+
-		"\2\2NO\5\24\13\2OP\7\13\2\2P\23\3\2\2\2QV\5\26\f\2RS\7\f\2\2SU\5\26\f"+
-		"\2TR\3\2\2\2UX\3\2\2\2VT\3\2\2\2VW\3\2\2\2W\25\3\2\2\2XV\3\2\2\2YZ\t\2"+
-		"\2\2Z\27\3\2\2\2\b *\638=V";
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\21a\4\2\t\2\4\3\t"+
+		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4"+
+		"\f\t\f\3\2\3\2\3\2\3\2\3\2\3\3\6\3\37\n\3\r\3\16\3 \3\4\3\4\3\4\3\4\3"+
+		"\4\3\4\7\4)\n\4\f\4\16\4,\13\4\3\4\3\4\3\5\3\5\3\5\3\5\5\5\64\n\5\3\6"+
+		"\6\6\67\n\6\r\6\16\68\3\7\3\7\3\7\5\7>\n\7\3\b\3\b\3\b\3\b\3\b\3\b\3\b"+
+		"\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\n\3\n\3\n\3\n\3\n\3\n\3\13\3\13\3\13\7"+
+		"\13W\n\13\f\13\16\13Z\13\13\3\f\3\f\3\f\5\f_\n\f\3\f\2\2\r\2\4\6\b\n\f"+
+		"\16\20\22\24\26\2\2]\2\30\3\2\2\2\4\36\3\2\2\2\6\"\3\2\2\2\b\63\3\2\2"+
+		"\2\n\66\3\2\2\2\f=\3\2\2\2\16?\3\2\2\2\20F\3\2\2\2\22M\3\2\2\2\24S\3\2"+
+		"\2\2\26^\3\2\2\2\30\31\7\6\2\2\31\32\5\4\3\2\32\33\5\n\6\2\33\34\7\4\2"+
+		"\2\34\3\3\2\2\2\35\37\5\6\4\2\36\35\3\2\2\2\37 \3\2\2\2 \36\3\2\2\2 !"+
+		"\3\2\2\2!\5\3\2\2\2\"#\5\b\5\2#$\7\17\2\2$*\b\4\1\2%&\7\16\2\2&\'\7\17"+
+		"\2\2\')\b\4\1\2(%\3\2\2\2),\3\2\2\2*(\3\2\2\2*+\3\2\2\2+-\3\2\2\2,*\3"+
+		"\2\2\2-.\7\13\2\2.\7\3\2\2\2/\60\7\5\2\2\60\64\b\5\1\2\61\62\7\b\2\2\62"+
+		"\64\b\5\1\2\63/\3\2\2\2\63\61\3\2\2\2\64\t\3\2\2\2\65\67\5\f\7\2\66\65"+
+		"\3\2\2\2\678\3\2\2\28\66\3\2\2\289\3\2\2\29\13\3\2\2\2:>\5\16\b\2;>\5"+
+		"\20\t\2<>\5\22\n\2=:\3\2\2\2=;\3\2\2\2=<\3\2\2\2>\r\3\2\2\2?@\7\7\2\2"+
+		"@A\7\t\2\2AB\7\17\2\2BC\b\b\1\2CD\7\n\2\2DE\7\13\2\2E\17\3\2\2\2FG\7\3"+
+		"\2\2GH\7\t\2\2HI\7\17\2\2IJ\b\t\1\2JK\7\n\2\2KL\7\13\2\2L\21\3\2\2\2M"+
+		"N\7\17\2\2NO\b\n\1\2OP\7\r\2\2PQ\5\24\13\2QR\7\13\2\2R\23\3\2\2\2SX\5"+
+		"\26\f\2TU\7\f\2\2UW\5\26\f\2VT\3\2\2\2WZ\3\2\2\2XV\3\2\2\2XY\3\2\2\2Y"+
+		"\25\3\2\2\2ZX\3\2\2\2[\\\7\17\2\2\\_\b\f\1\2]_\7\20\2\2^[\3\2\2\2^]\3"+
+		"\2\2\2_\27\3\2\2\2\t *\638=X^";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
