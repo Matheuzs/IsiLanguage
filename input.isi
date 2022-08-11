@@ -10,5 +10,12 @@ programa
 	
 	escreva(a);
 	escreva(b);
-
+	
+	se ( a > b ) {
+		escreva(a);
+	}
+	senao {
+		escreva(b);
+	}
+	
 fimprog;

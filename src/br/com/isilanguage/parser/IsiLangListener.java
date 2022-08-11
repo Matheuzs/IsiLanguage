@@ -5,6 +5,11 @@ package br.com.isilanguage.parser;
 	import br.com.isilanguage.datastructures.IsiVariable;
 	import br.com.isilanguage.datastructures.IsiSymbolTable;
 	import br.com.isilanguage.exceptions.IsiSemanticException;
+	import br.com.isilanguage.ast.IsiProgram;
+	import br.com.isilanguage.ast.AbstractCommand;
+	import br.com.isilanguage.ast.CommandLeitura;
+	import br.com.isilanguage.ast.CommandEscrita;
+	import br.com.isilanguage.ast.CommandAtribuicao;
 	import java.util.ArrayList;
 
 import org.antlr.v4.runtime.tree.ParseTreeListener;
@@ -104,6 +109,16 @@ public interface IsiLangListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitCmdattrib(IsiLangParser.CmdattribContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link IsiLangParser#cmdselecao}.
+	 * @param ctx the parse tree
+	 */
+	void enterCmdselecao(IsiLangParser.CmdselecaoContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link IsiLangParser#cmdselecao}.
+	 * @param ctx the parse tree
+	 */
+	void exitCmdselecao(IsiLangParser.CmdselecaoContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link IsiLangParser#expr}.
 	 * @param ctx the parse tree
