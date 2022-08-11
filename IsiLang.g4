@@ -6,10 +6,15 @@ prog	: 'programa'	bloco	'fimprog;'
 bloco	: (cmd)+
 		;
 
-cmd		: cmdleitura | cmdescrita | cmdattrib
+cmd		: cmdleitura { System.out.println("Reconheci um comando de leitura!"); }
+		| cmdescrita { System.out.println("Reconheci um comando de escrita!"); }
+		| cmdattrib { System.out.println("Reconheci um comando de atribuicao!"); }
 		;
 
-cmdleitura	: 'leia' AP ID FP SC
+cmdleitura	: 'leia' AP
+					 ID { System.out.println("ID=" + _input.LT(-1).getText()); }
+					 FP
+					 SC
 			;
 			
 cmdescrita	: 'escreva' AP ID FP SC
