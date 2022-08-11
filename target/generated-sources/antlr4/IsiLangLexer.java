@@ -9,7 +9,9 @@
 	import br.com.isilanguage.ast.CommandLeitura;
 	import br.com.isilanguage.ast.CommandEscrita;
 	import br.com.isilanguage.ast.CommandAtribuicao;
+	import br.com.isilanguage.ast.CommandDecisao;
 	import java.util.ArrayList;
+	import java.util.Stack;
 
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
@@ -54,11 +56,15 @@ public class IsiLangLexer extends Lexer {
 		private IsiSymbolTable symbolTable = new IsiSymbolTable();
 		private IsiSymbol symbol;
 		private IsiProgram program = new IsiProgram();
-		private ArrayList<AbstractCommand> curThread = new ArrayList<AbstractCommand>();
+		private ArrayList<AbstractCommand> curThread;
+		private Stack<ArrayList<AbstractCommand>> stack = new Stack<ArrayList<AbstractCommand>>();
 		private String _readID;
 		private String _writeID;
 		private String _exprID;
 		private String _exprContent;
+		private String _exprDecision;
+		private ArrayList<AbstractCommand> listaTrue;
+		private ArrayList<AbstractCommand> listaFalse;
 		
 		public void verificaID(String id){
 			if (!symbolTable.exists(id)){

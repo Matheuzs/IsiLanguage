@@ -10,7 +10,9 @@ package br.com.isilanguage.parser;
 	import br.com.isilanguage.ast.CommandLeitura;
 	import br.com.isilanguage.ast.CommandEscrita;
 	import br.com.isilanguage.ast.CommandAtribuicao;
+	import br.com.isilanguage.ast.CommandDecisao;
 	import java.util.ArrayList;
+	import java.util.Stack;
 
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 

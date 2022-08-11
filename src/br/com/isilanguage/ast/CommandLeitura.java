@@ -13,4 +13,9 @@ public class CommandLeitura extends AbstractCommand {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public String toString() {
+		return "CommandLeitura [id=" + id + "]";
+	}
 }

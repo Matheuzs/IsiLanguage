@@ -10,7 +10,9 @@ grammar IsiLang;
 	import br.com.isilanguage.ast.CommandLeitura;
 	import br.com.isilanguage.ast.CommandEscrita;
 	import br.com.isilanguage.ast.CommandAtribuicao;
+	import br.com.isilanguage.ast.CommandDecisao;
 	import java.util.ArrayList;
+	import java.util.Stack;
 }
 
 @members {
@@ -20,11 +22,15 @@ grammar IsiLang;
 	private IsiSymbolTable symbolTable = new IsiSymbolTable();
 	private IsiSymbol symbol;
 	private IsiProgram program = new IsiProgram();
-	private ArrayList<AbstractCommand> curThread = new ArrayList<AbstractCommand>();
+	private ArrayList<AbstractCommand> curThread;
+	private Stack<ArrayList<AbstractCommand>> stack = new Stack<ArrayList<AbstractCommand>>();
 	private String _readID;
 	private String _writeID;
 	private String _exprID;
 	private String _exprContent;
+	private String _exprDecision;
+	private ArrayList<AbstractCommand> listaTrue;
+	private ArrayList<AbstractCommand> listaFalse;
 	
 	public void verificaID(String id){
 		if (!symbolTable.exists(id)){
@@ -40,7 +46,9 @@ grammar IsiLang;
 }
 
 prog	: 'programa' decl bloco 'fimprog;'
-		  { program.setComandos(curThread); }
+		  { 
+		  	program.setComandos(stack.pop());
+		  }
 		;
 		
 decl	: (declaravar)+
@@ -78,7 +86,12 @@ tipo	: 'numero' { _tipo = IsiVariable.NUMBER; }
 		| 'texto' { _tipo = IsiVariable.TEXT; }
 		;
 		
-bloco	: (cmd)+
+bloco	: 
+		{ 
+			curThread = new ArrayList<AbstractCommand>();
+			stack.push(curThread);
+		}
+		(cmd)+
 		;
 
 cmd		: cmdleitura
@@ -96,7 +109,7 @@ cmdleitura	: 'leia' AP
 					 SC
 				{
 					CommandLeitura cmd = new CommandLeitura(_readID);
-					curThread.add(cmd);
+					stack.peek().add(cmd);
 				}
 			;
 			
@@ -109,7 +122,7 @@ cmdescrita	: 'escreva' AP
 						SC
 				{
 					CommandEscrita cmd = new CommandEscrita(_writeID);
-					curThread.add(cmd);
+					stack.peek().add(cmd);
 				}
 			;
 
@@ -122,12 +135,35 @@ cmdattrib	: ID {
 			  SC
 			  {
 			  	CommandAtribuicao cmd = new CommandAtribuicao(_exprID, _exprContent);
-			  	curThread.add(cmd);
+			  	stack.peek().add(cmd);
 			  }
 			;
 			
-cmdselecao	: 'se' AP ID OPREL (ID | NUMBER) FP ACH (cmd)+ FCH
-			  ('senao' ACH (cmd)+ FCH)?
+cmdselecao	: 'se' AP 
+				   ID { _exprDecision = _input.LT(-1).getText(); }
+				   OPREL { _exprDecision += _input.LT(-1).getText(); }
+				   (ID | NUMBER) { _exprDecision += _input.LT(-1).getText(); }
+				   FP 
+				   ACH {
+				   	curThread = new ArrayList<AbstractCommand>();
+				   	stack.push(curThread);
+				   }
+				   (cmd)+ 
+				   FCH {
+				   	listaTrue = stack.pop();
+				   }
+			  ('senao' 
+			  	ACH {
+					curThread = new ArrayList<AbstractCommand>();
+               	 	stack.push(curThread);
+			  	}
+			  	(cmd)+
+			  	FCH {
+	           		listaFalse = stack.pop();
+	           		CommandDecisao cmd = new CommandDecisao(_exprDecision, listaTrue, listaFalse);
+	           		stack.peek().add(cmd);
+			  	}
+			  )?
 			;
 			
 expr		: termo ( 

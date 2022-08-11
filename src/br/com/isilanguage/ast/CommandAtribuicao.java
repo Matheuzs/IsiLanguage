@@ -15,4 +15,9 @@ public class CommandAtribuicao extends AbstractCommand {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public String toString() {
+		return "CommandAtribuicao [id=" + id + ", expr=" + expr + "]";
+	}
 }
