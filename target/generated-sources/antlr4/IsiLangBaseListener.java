@@ -1,5 +1,12 @@
 // Generated from IsiLang.g4 by ANTLR 4.4
 
+	import br.com.isilanguage.datastructures.IsiSymbol;
+	import br.com.isilanguage.datastructures.IsiVariable;
+	import br.com.isilanguage.datastructures.IsiSymbolTable;
+	import br.com.isilanguage.exceptions.IsiSemanticException;
+	import java.util.ArrayList;
+
+
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -35,6 +42,30 @@ public class IsiLangBaseListener implements IsiLangListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitTermo(@NotNull IsiLangParser.TermoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterTipo(@NotNull IsiLangParser.TipoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTipo(@NotNull IsiLangParser.TipoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterDecl(@NotNull IsiLangParser.DeclContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDecl(@NotNull IsiLangParser.DeclContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -95,6 +126,18 @@ public class IsiLangBaseListener implements IsiLangListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitProg(@NotNull IsiLangParser.ProgContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterDeclaravar(@NotNull IsiLangParser.DeclaravarContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDeclaravar(@NotNull IsiLangParser.DeclaravarContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
