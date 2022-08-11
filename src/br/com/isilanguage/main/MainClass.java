@@ -32,6 +32,8 @@ public class MainClass {
 			System.out.println("Compilation Successful");
 			
 			parser.exibeComandos();
+			
+			parser.generateCode();
 		}
 		catch(IsiSemanticException ex) {
 			System.err.println("Semantic Error - " + ex.getMessage());

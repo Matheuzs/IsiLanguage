@@ -10,8 +10,7 @@ public class CommandEscrita extends AbstractCommand {
 	
 	@Override
 	public String generateJavaCode() {
-		// TODO Auto-generated method stub
-		return null;
+		return "System.out.println(" + id + ");";
 	}
 
 	@Override

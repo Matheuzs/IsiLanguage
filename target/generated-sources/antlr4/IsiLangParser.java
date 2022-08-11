@@ -90,6 +90,10 @@ public class IsiLangParser extends Parser {
 				System.out.println(c);
 			}
 		}
+		
+		public void generateCode() {
+			program.generateTarget();
+		}
 
 	public IsiLangParser(TokenStream input) {
 		super(input);
@@ -126,7 +130,8 @@ public class IsiLangParser extends Parser {
 			setState(25); decl();
 			setState(26); bloco();
 			setState(27); match(T__5);
-			 
+
+					  	program.setVarTable(symbolTable);
 					  	program.setComandos(stack.pop());
 					  
 			}
@@ -497,7 +502,8 @@ public class IsiLangParser extends Parser {
 			setState(70); match(FP);
 			setState(71); match(SC);
 
-								CommandLeitura cmd = new CommandLeitura(_readID);
+								IsiVariable var = (IsiVariable) symbolTable.get(_readID);
+								CommandLeitura cmd = new CommandLeitura(_readID, var);
 								stack.peek().add(cmd);
 							
 			}

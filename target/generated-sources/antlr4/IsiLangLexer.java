@@ -77,6 +77,10 @@ public class IsiLangLexer extends Lexer {
 				System.out.println(c);
 			}
 		}
+		
+		public void generateCode() {
+			program.generateTarget();
+		}
 
 
 	public IsiLangLexer(CharStream input) {

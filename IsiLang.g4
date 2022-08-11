@@ -43,10 +43,15 @@ grammar IsiLang;
 			System.out.println(c);
 		}
 	}
+	
+	public void generateCode() {
+		program.generateTarget();
+	}
 }
 
 prog	: 'programa' decl bloco 'fimprog;'
-		  { 
+		  {
+		  	program.setVarTable(symbolTable);
 		  	program.setComandos(stack.pop());
 		  }
 		;
@@ -108,7 +113,8 @@ cmdleitura	: 'leia' AP
 					 FP
 					 SC
 				{
-					CommandLeitura cmd = new CommandLeitura(_readID);
+					IsiVariable var = (IsiVariable) symbolTable.get(_readID);
+					CommandLeitura cmd = new CommandLeitura(_readID, var);
 					stack.peek().add(cmd);
 				}
 			;
