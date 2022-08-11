@@ -6,7 +6,8 @@ programa
 	leia(a);
 	leia(b);
 
-	a = 1 + 2 * 3 / b;
+	a = 1;
+	b = 2;
 	
 	escreva(a);
 	escreva(b);
@@ -18,4 +19,8 @@ programa
 		escreva(b);
 	}
 	
+	enquanto ( b > a ) {
+		escreva(a);
+		a = 3;
+	}
 fimprog;

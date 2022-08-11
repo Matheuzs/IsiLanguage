@@ -11,6 +11,7 @@ grammar IsiLang;
 	import br.com.isilanguage.ast.CommandEscrita;
 	import br.com.isilanguage.ast.CommandAtribuicao;
 	import br.com.isilanguage.ast.CommandDecisao;
+	import br.com.isilanguage.ast.CommandEnquanto;
 	import java.util.ArrayList;
 	import java.util.Stack;
 }
@@ -103,6 +104,7 @@ cmd		: cmdleitura
 		| cmdescrita
 		| cmdattrib
 		| cmdselecao
+		| cmdenquanto
 		;
 
 cmdleitura	: 'leia' AP
@@ -171,6 +173,22 @@ cmdselecao	: 'se' AP
 			  	}
 			  )?
 			;
+			
+cmdenquanto	: 'enquanto' AP
+					     ID { _exprDecision = _input.LT(-1).getText(); }
+					     OPREL { _exprDecision += _input.LT(-1).getText(); }
+					     (ID | NUMBER) { _exprDecision += _input.LT(-1).getText(); }
+					     FP 
+					     ACH {
+					   		curThread = new ArrayList<AbstractCommand>();
+					   		stack.push(curThread);
+						 }
+						 (cmd)+ 
+						 FCH {
+						 	CommandEnquanto cmd = new CommandEnquanto(_exprDecision, stack.pop());
+	           				stack.peek().add(cmd);
+						 }
+			  ;
 			
 expr		: termo ( 
 				OP { _exprContent += _input.LT(-1).getText(); }

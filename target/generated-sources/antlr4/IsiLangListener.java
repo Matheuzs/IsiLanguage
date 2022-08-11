@@ -10,6 +10,7 @@
 	import br.com.isilanguage.ast.CommandEscrita;
 	import br.com.isilanguage.ast.CommandAtribuicao;
 	import br.com.isilanguage.ast.CommandDecisao;
+	import br.com.isilanguage.ast.CommandEnquanto;
 	import java.util.ArrayList;
 	import java.util.Stack;
 
@@ -31,16 +32,6 @@ public interface IsiLangListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitCmdattrib(@NotNull IsiLangParser.CmdattribContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link IsiLangParser#termo}.
-	 * @param ctx the parse tree
-	 */
-	void enterTermo(@NotNull IsiLangParser.TermoContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link IsiLangParser#termo}.
-	 * @param ctx the parse tree
-	 */
-	void exitTermo(@NotNull IsiLangParser.TermoContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link IsiLangParser#tipo}.
 	 * @param ctx the parse tree
@@ -82,6 +73,16 @@ public interface IsiLangListener extends ParseTreeListener {
 	 */
 	void exitBloco(@NotNull IsiLangParser.BlocoContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link IsiLangParser#cmdenquanto}.
+	 * @param ctx the parse tree
+	 */
+	void enterCmdenquanto(@NotNull IsiLangParser.CmdenquantoContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link IsiLangParser#cmdenquanto}.
+	 * @param ctx the parse tree
+	 */
+	void exitCmdenquanto(@NotNull IsiLangParser.CmdenquantoContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link IsiLangParser#cmdselecao}.
 	 * @param ctx the parse tree
 	 */
@@ -91,6 +92,26 @@ public interface IsiLangListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitCmdselecao(@NotNull IsiLangParser.CmdselecaoContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link IsiLangParser#prog}.
+	 * @param ctx the parse tree
+	 */
+	void enterProg(@NotNull IsiLangParser.ProgContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link IsiLangParser#prog}.
+	 * @param ctx the parse tree
+	 */
+	void exitProg(@NotNull IsiLangParser.ProgContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link IsiLangParser#termo}.
+	 * @param ctx the parse tree
+	 */
+	void enterTermo(@NotNull IsiLangParser.TermoContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link IsiLangParser#termo}.
+	 * @param ctx the parse tree
+	 */
+	void exitTermo(@NotNull IsiLangParser.TermoContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link IsiLangParser#expr}.
 	 * @param ctx the parse tree
@@ -111,16 +132,6 @@ public interface IsiLangListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitCmd(@NotNull IsiLangParser.CmdContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link IsiLangParser#prog}.
-	 * @param ctx the parse tree
-	 */
-	void enterProg(@NotNull IsiLangParser.ProgContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link IsiLangParser#prog}.
-	 * @param ctx the parse tree
-	 */
-	void exitProg(@NotNull IsiLangParser.ProgContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link IsiLangParser#declaravar}.
 	 * @param ctx the parse tree
