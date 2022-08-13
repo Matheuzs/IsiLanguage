@@ -7,6 +7,7 @@ public class IsiVariable extends IsiSymbol {
 	
 	private int type;
 	private String value;
+	private boolean hasBeenUsed = false;
 	
 	public IsiVariable(String name, int type, String value) {
 		super(name);
@@ -28,6 +29,16 @@ public class IsiVariable extends IsiSymbol {
 
 	public void setValue(String value) {
 		this.value = value;
+	}
+
+	@Override
+	public boolean hasBeenUsed() {
+		return hasBeenUsed;
+	}
+
+	@Override
+	public void setUsed() {
+		this.hasBeenUsed = true;
 	}
 	
 	@Override

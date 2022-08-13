@@ -9,6 +9,7 @@ a = _key.nextDouble();
 b = _key.nextDouble();
 a = 1;
 b = 2;
+t1 = "string teste";
 System.out.println(a);
 System.out.println(b);
 if (a>b) {

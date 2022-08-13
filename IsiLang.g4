@@ -54,6 +54,11 @@ prog	: 'programa' decl bloco 'fimprog;'
 		  {
 		  	program.setVarTable(symbolTable);
 		  	program.setComandos(stack.pop());
+				for(IsiSymbol symbol: symbolTable.getAll()){
+					if (!symbol.hasBeenUsed()){
+						System.out.println("WARNING: Variable " + symbol.getName() + " was declared but not used.");
+					}
+				}
 		  }
 		;
 		
@@ -111,6 +116,7 @@ cmdleitura	: 'leia' AP
 					 ID { 
 					 	verificaID(_input.LT(-1).getText());
 					 	_readID = _input.LT(-1).getText();
+						symbolTable.get(_readID).setUsed();
 					 }
 					 FP
 					 SC
@@ -125,6 +131,7 @@ cmdescrita	: 'escreva' AP
 						ID { 
 							verificaID(_input.LT(-1).getText());
 							_writeID = _input.LT(-1).getText();
+							symbolTable.get(_writeID).setUsed();
 						}
 						FP
 						SC
@@ -134,21 +141,21 @@ cmdescrita	: 'escreva' AP
 				}
 			;
 
-cmdattrib	: ID { 
-				verificaID(_input.LT(-1).getText());
-				_exprID = _input.LT(-1).getText();
-			  }
-			  ATTR { _exprContent = ""; }
-			  expr 
-			  SC
-			  {
-			  	CommandAtribuicao cmd = new CommandAtribuicao(_exprID, _exprContent);
-			  	stack.peek().add(cmd);
-			  }
-			;
+cmdattrib:
+	ID { verificaID(_input.LT(-1).getText());
+      _exprID = _input.LT(-1).getText();} 
+  ATTR { _exprContent = ""; } (
+		expr | STR {_exprContent += _input.LT(-1).getText() ;}
+	) SC {
+		CommandAtribuicao cmd = new CommandAtribuicao(_exprID, _exprContent);
+		stack.peek().add(cmd);
+	};
 			
 cmdselecao	: 'se' AP 
-				   ID { _exprDecision = _input.LT(-1).getText(); }
+				   ID { 
+						_exprDecision = _input.LT(-1).getText(); 
+						symbolTable.get(_exprDecision).setUsed();
+					 }
 				   OPREL { _exprDecision += _input.LT(-1).getText(); }
 				   (ID | NUMBER) { _exprDecision += _input.LT(-1).getText(); }
 				   FP 
@@ -175,7 +182,10 @@ cmdselecao	: 'se' AP
 			;
 			
 cmdenquanto	: 'enquanto' AP
-					     ID { _exprDecision = _input.LT(-1).getText(); }
+					     ID { 
+								_exprDecision = _input.LT(-1).getText(); 
+								 symbolTable.get(_exprDecision).setUsed();
+							 }
 					     OPREL { _exprDecision += _input.LT(-1).getText(); }
 					     (ID | NUMBER) { _exprDecision += _input.LT(-1).getText(); }
 					     FP 
@@ -209,6 +219,8 @@ termo		: ID {
 AP	: '('
 	;
 
+ASP: '"';
+
 FP	: ')'
 	;
 
@@ -238,5 +250,7 @@ ID	: [a-z] ([a-z] | [A-Z] | [0-9])*
 	
 NUMBER	: [0-9]+ ('.' [0-9]+)?
 		;
+
+STR: ASP ([a-z] | [A-Z]) ([a-z] | [A-Z] | [0-9] | WS)+ ASP;
 		
 WS	: (' ' | '\t' | '\n' | '\r') -> skip;

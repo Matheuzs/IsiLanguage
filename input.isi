@@ -8,6 +8,7 @@ programa
 
 	a = 1;
 	b = 2;
+	t1 = "string teste";
 	
 	escreva(a);
 	escreva(b);
@@ -23,4 +24,5 @@ programa
 		escreva(a);
 		a = 3;
 	}
+	
 fimprog;

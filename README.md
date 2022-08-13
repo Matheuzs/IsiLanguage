@@ -3,7 +3,7 @@
 | Nome                               | RA          |
 |------------------------------------|-------------|
 | Matheus Augusto Correa de Oliveira | 11201721710 |
-|                                    |             |
+| Daniel Espindola da Silva          | 11201720556 |
 |                                    |             |
 |                                    |             |
 |                                    |             |
@@ -17,7 +17,7 @@ Verificar Atribuições com compatibilidade de tipos (semântica)
 OK - Possuir operações de Entrada e Saída  
 Aceitar números decimais  
 OK - Verificar declaração de variávies (não usar variáveis que não foram declaradas)  
-Verificar se há variáveis declaradas e não-utilizadas (warning)  
+OK - Verificar se há variáveis declaradas e não-utilizadas (warning)  
 OK - Geração de pelo menos 1 linguagem destino (C/Java/Python)  
 
 # Video Explicativo:
