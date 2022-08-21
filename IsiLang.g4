@@ -18,6 +18,9 @@ grammar IsiLang;
 
 @members {
 	private int _tipo;
+	private int _receiverTipo;
+	private int _termoTipo;
+	private int _exprTipo;
 	private String _varName;
 	private String _varValue;
 	private IsiSymbolTable symbolTable = new IsiSymbolTable();
@@ -37,6 +40,11 @@ grammar IsiLang;
 		if (!symbolTable.exists(id)){
 			throw new IsiSemanticException("Symbol " + id + " not declared");
 		}
+	}
+	
+	public int getSymbolType(String id) {
+		IsiVariable var = (IsiVariable) symbolTable.get(id);
+        return var.getType();
 	}
 	
 	public void exibeComandos(){
@@ -143,9 +151,19 @@ cmdescrita	: 'escreva' AP
 
 cmdattrib:
 	ID { verificaID(_input.LT(-1).getText());
-      _exprID = _input.LT(-1).getText();} 
+      _exprID = _input.LT(-1).getText();
+      _receiverTipo = getSymbolType(_exprID);
+      } 
   ATTR { _exprContent = ""; } (
-		expr | STR {_exprContent += _input.LT(-1).getText() ;}
+		expr {if (_receiverTipo != _exprTipo)
+		 throw new IsiSemanticException("Can not assign expression of type \"" + IsiVariable.getTypeText(_exprTipo) + "\" to variable \"" + _exprID + "\" of type \"" + IsiVariable.getTypeText(_receiverTipo) + "\"");
+		}
+		| 
+		STR {_exprContent += _input.LT(-1).getText();
+			 if (_receiverTipo != IsiVariable.TEXT) {
+				throw new IsiSemanticException("Can not assign expression of type \"texto\" to variable \"" + _exprID + "\" of type \"" + IsiVariable.getTypeText(_receiverTipo) + "\"");
+			 }
+			}
 	) SC {
 		CommandAtribuicao cmd = new CommandAtribuicao(_exprID, _exprContent);
 		stack.peek().add(cmd);
@@ -200,19 +218,34 @@ cmdenquanto	: 'enquanto' AP
 						 }
 			  ;
 			
-expr		: termo ( 
+expr		: termo {
+				_exprTipo = _termoTipo;
+			  } ( 
 				OP { _exprContent += _input.LT(-1).getText(); }
-				termo
+				termo {
+					if (_exprTipo != _termoTipo) {
+						throw new IsiSemanticException("Inconsistent types at given expression: " + _exprContent);
+					}
+				}
 			  )*
 			;
 			
 termo		: ID { 
 				verificaID(_input.LT(-1).getText());
 				_exprContent += _input.LT(-1).getText();
+				_varName = _input.LT(-1).getText();
+				_termoTipo = getSymbolType(_varName);
+				symbolTable.get(_varName).setUsed();
 			  } 
 			| 
 			NUMBER {
 				_exprContent += _input.LT(-1).getText();
+				_termoTipo = IsiVariable.NUMBER;
+			}
+			|
+			STR {
+				_exprContent += _input.LT(-1).getText();
+				_termoTipo = IsiVariable.TEXT;
 			}
 			;
 

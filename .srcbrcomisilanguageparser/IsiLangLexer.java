@@ -95,8 +95,6 @@ public class IsiLangLexer extends Lexer {
 
 		private int _tipo;
 		private int _receiverTipo;
-		private int _termoTipo;
-		private int _exprTipo;
 		private String _varName;
 		private String _varValue;
 		private IsiSymbolTable symbolTable = new IsiSymbolTable();
@@ -116,11 +114,6 @@ public class IsiLangLexer extends Lexer {
 			if (!symbolTable.exists(id)){
 				throw new IsiSemanticException("Symbol " + id + " not declared");
 			}
-		}
-		
-		public int getSymbolType(String id) {
-			IsiVariable var = (IsiVariable) symbolTable.get(id);
-	        return var.getType();
 		}
 		
 		public void exibeComandos(){
