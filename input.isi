@@ -7,7 +7,7 @@ programa
 	leia(a);
 	leia(b);
 
-	t2 = t1 + "oi";
+	t2 = t1 + a;
 	
 	escreva(a);
 	escreva(b);
