@@ -5,11 +5,10 @@ public class MainClass{
 double a;
 double b;
 String t1;
+String t2;
 a = _key.nextDouble();
 b = _key.nextDouble();
-a = 1;
-b = 2;
-t1 = "string teste";
+t2 = t1+"oi";
 System.out.println(a);
 System.out.println(b);
 if (a>b) {

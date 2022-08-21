@@ -2,13 +2,12 @@ programa
 
 	numero a, b;
 	texto  t1;
+	texto  t2;
 	
 	leia(a);
 	leia(b);
 
-	a = 1;
-	b = 2;
-	t1 = "string teste";
+	t2 = t1 + "oi";
 	
 	escreva(a);
 	escreva(b);

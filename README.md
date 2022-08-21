@@ -4,7 +4,7 @@
 |------------------------------------|-------------|
 | Matheus Augusto Correa de Oliveira | 11201721710 |
 | Daniel Espindola da Silva          | 11201720556 |
-|                                    |             |
+| Victor Hugo Zaninette Bernardino   | 11201811443 |
 |                                    |             |
 |                                    |             |
 
@@ -13,7 +13,7 @@
 - [X] Possuir 2 tipos de dados (pelo menos 1 String);  
 - [X] Possuir a instrução de decisão (if/else);  
 - [X] Pelo menos 1 estrutura de repetição;  
-- [ ] Verificar Atribuições com compatibilidade de tipos (semântica);  
+- [X] Verificar Atribuições com compatibilidade de tipos (semântica);  
 - [X] Possuir operações de Entrada e Saída;  
 - [X] Aceitar números decimais;  
 - [X] Verificar declaração de variávies (não usar variáveis que não foram declaradas);  

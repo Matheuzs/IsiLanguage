@@ -14,6 +14,16 @@ public class IsiVariable extends IsiSymbol {
 		this.type = type;
 		this.value = value;
 	}
+	
+	public static String getTypeText(int type) {
+		switch(type) {
+			case 0:
+				return "numero";
+			case 1:
+				return "texto";
+		}
+		return null;
+	}
 
 	public int getType() {
 		return type;
