@@ -5,7 +5,7 @@
 | Matheus Augusto Correa de Oliveira | 11201721710 |
 | Daniel Espindola da Silva          | 11201720556 |
 | Victor Hugo Zaninette Bernardino   | 11201811443 |
-|                                    |             |
+| Lincoln Aparecido Sobral Santos    | 11201811301            |
 |                                    |             |
 
 # Checklist:
