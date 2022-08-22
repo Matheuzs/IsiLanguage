@@ -247,6 +247,15 @@ termo		: ID {
 				_exprContent += _input.LT(-1).getText();
 				_termoTipo = IsiVariable.TEXT;
 			}
+			|
+			AP { 
+			_exprContent += _input.LT(-1).getText(); 
+			}
+                	expr
+			FP { 
+			_exprContent += _input.LT(-1).getText(); 
+			}
+			;
 			;
 
 AP	: '('
