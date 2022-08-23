@@ -118,6 +118,12 @@ public class IsiLangLexer extends Lexer {
 			}
 		}
 		
+		public void verificaInicializado(String id){
+			if (!symbolTable.get(id).hasBeenInitialized()){
+				throw new IsiSemanticException("Symbol " + id + " not initialized");
+			}
+		}
+		
 		public int getSymbolType(String id) {
 			IsiVariable var = (IsiVariable) symbolTable.get(id);
 	        return var.getType();

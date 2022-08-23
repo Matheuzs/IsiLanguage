@@ -42,6 +42,12 @@ grammar IsiLang;
 		}
 	}
 	
+	public void verificaInicializado(String id){
+		if (!symbolTable.get(id).hasBeenInitialized()){
+			throw new IsiSemanticException("Symbol " + id + " not initialized");
+		}
+	}
+	
 	public int getSymbolType(String id) {
 		IsiVariable var = (IsiVariable) symbolTable.get(id);
         return var.getType();
@@ -125,6 +131,7 @@ cmdleitura	: 'leia' AP
 					 	verificaID(_input.LT(-1).getText());
 					 	_readID = _input.LT(-1).getText();
 						symbolTable.get(_readID).setUsed();
+						symbolTable.get(_readID).setInitialized();
 					 }
 					 FP
 					 SC
@@ -138,6 +145,7 @@ cmdleitura	: 'leia' AP
 cmdescrita	: 'escreva' AP
 						ID { 
 							verificaID(_input.LT(-1).getText());
+							verificaInicializado(_input.LT(-1).getText());
 							_writeID = _input.LT(-1).getText();
 							symbolTable.get(_writeID).setUsed();
 						}
@@ -150,9 +158,10 @@ cmdescrita	: 'escreva' AP
 			;
 
 cmdattrib:
-	ID { verificaID(_input.LT(-1).getText());
-      _exprID = _input.LT(-1).getText();
+	ID {_exprID = _input.LT(-1).getText();
+		verificaID(_exprID);
       _receiverTipo = getSymbolType(_exprID);
+      symbolTable.get(_exprID).setInitialized();
       } 
   ATTR { _exprContent = ""; } (
 		expr {if (_receiverTipo != _exprTipo)
@@ -173,9 +182,12 @@ cmdselecao	: 'se' AP
 				   ID { 
 						_exprDecision = _input.LT(-1).getText(); 
 						symbolTable.get(_exprDecision).setUsed();
+						verificaInicializado(_exprDecision);
 					 }
 				   OPREL { _exprDecision += _input.LT(-1).getText(); }
-				   (ID | NUMBER) { _exprDecision += _input.LT(-1).getText(); }
+				   (ID {verificaInicializado(_input.LT(-1).getText());}
+				    |
+				    NUMBER) { _exprDecision += _input.LT(-1).getText(); }
 				   FP 
 				   ACH {
 				   	curThread = new ArrayList<AbstractCommand>();
@@ -203,9 +215,12 @@ cmdenquanto	: 'enquanto' AP
 					     ID { 
 								_exprDecision = _input.LT(-1).getText(); 
 								 symbolTable.get(_exprDecision).setUsed();
+								 verificaInicializado(_varName);
 							 }
 					     OPREL { _exprDecision += _input.LT(-1).getText(); }
-					     (ID | NUMBER) { _exprDecision += _input.LT(-1).getText(); }
+					     (ID {verificaInicializado(_input.LT(-1).getText());}
+					     	|
+					      NUMBER) { _exprDecision += _input.LT(-1).getText(); }
 					     FP 
 					     ACH {
 					   		curThread = new ArrayList<AbstractCommand>();
@@ -236,6 +251,7 @@ termo		: ID {
 				_varName = _input.LT(-1).getText();
 				_termoTipo = getSymbolType(_varName);
 				symbolTable.get(_varName).setUsed();
+				verificaInicializado(_varName);
 			  } 
 			| 
 			NUMBER {

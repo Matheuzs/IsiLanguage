@@ -6,6 +6,7 @@ double a;
 double b;
 String t1;
 String t2;
+t1 = _key.nextLine();
 a = _key.nextDouble();
 b = _key.nextDouble();
 t2 = t1+"oi";

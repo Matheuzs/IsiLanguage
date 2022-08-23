@@ -7,6 +7,7 @@ public class IsiVariable extends IsiSymbol {
 	
 	private int type;
 	private String value;
+	private boolean hasBeenInitialized = false;
 	private boolean hasBeenUsed = false;
 	
 	public IsiVariable(String name, int type, String value) {
@@ -39,6 +40,16 @@ public class IsiVariable extends IsiSymbol {
 
 	public void setValue(String value) {
 		this.value = value;
+	}
+	
+	@Override
+	public void setInitialized() {
+		this.hasBeenInitialized = true;
+	}
+	
+	@Override
+	public boolean hasBeenInitialized() {
+		return this.hasBeenInitialized;
 	}
 
 	@Override

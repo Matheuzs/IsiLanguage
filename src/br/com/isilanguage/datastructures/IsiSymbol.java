@@ -7,8 +7,12 @@ public abstract class IsiSymbol {
 	public abstract String generateJavaCode();
 	
 	public abstract boolean hasBeenUsed();
-
+	
 	public abstract void setUsed();
+	
+	public abstract boolean hasBeenInitialized();
+	
+	public abstract void setInitialized();
 	
 	public IsiSymbol(String name) {
 		this.name = name;
