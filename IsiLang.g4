@@ -256,7 +256,6 @@ termo		: ID {
 			_exprContent += _input.LT(-1).getText(); 
 			}
 			;
-			;
 
 AP	: '('
 	;
