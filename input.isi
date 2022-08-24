@@ -1,27 +1,43 @@
 programa
 
-	numero a, b;
+	numero b, a;
 	texto  t1;
 	texto  t2;
+	texto  t3;
 	
+	leia(t1);
+	leia(t2);
+	leia(t3);
 	leia(a);
 	leia(b);
 
-	t2 = t1 + "oi";
 	
 	escreva(a);
 	escreva(b);
 	
-	se ( a > b ) {
-		escreva(a);
-	}
-	senao {
-		escreva(b);
+	escolha (a) {
+		caso 1:
+			t1 = t2 + t3;
+			escreva(t1);
+		caso 2:
+			a = a + 1;
+			escreva(a);
+		caso 3:
+			b = b + 1;
+			escreva(b);
+		caso 4:
+			a = a + b;
 	}
 	
 	enquanto ( b > a ) {
 		escreva(a);
 		a = 3;
+	}
+	
+	se ( t1 > t2 ) {
+		escreva(t1);
+	} senao {
+		escreva(t2);
 	}
 	
 fimprog;

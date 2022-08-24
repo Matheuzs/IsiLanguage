@@ -12,6 +12,7 @@ grammar IsiLang;
 	import br.com.isilanguage.ast.CommandAtribuicao;
 	import br.com.isilanguage.ast.CommandDecisao;
 	import br.com.isilanguage.ast.CommandEnquanto;
+	import br.com.isilanguage.ast.CommandEscolha;
 	import java.util.ArrayList;
 	import java.util.Stack;
 }
@@ -35,6 +36,8 @@ grammar IsiLang;
 	private String _exprDecision;
 	private ArrayList<AbstractCommand> listaTrue;
 	private ArrayList<AbstractCommand> listaFalse;
+	private ArrayList<ArrayList<AbstractCommand>> switchCommands;
+	private ArrayList<String> listaCases;
 	
 	public void verificaID(String id){
 		if (!symbolTable.exists(id)){
@@ -124,6 +127,7 @@ cmd		: cmdleitura
 		| cmdattrib
 		| cmdselecao
 		| cmdenquanto
+		| cmdswitch
 		;
 
 cmdleitura	: 'leia' AP
@@ -160,8 +164,8 @@ cmdescrita	: 'escreva' AP
 cmdattrib:
 	ID {_exprID = _input.LT(-1).getText();
 		verificaID(_exprID);
-      _receiverTipo = getSymbolType(_exprID);
-      symbolTable.get(_exprID).setInitialized();
+        _receiverTipo = getSymbolType(_exprID);
+        symbolTable.get(_exprID).setInitialized();
       } 
   ATTR { _exprContent = ""; } (
 		expr {if (_receiverTipo != _exprTipo)
@@ -182,10 +186,14 @@ cmdselecao	: 'se' AP
 				   ID { 
 						_exprDecision = _input.LT(-1).getText(); 
 						symbolTable.get(_exprDecision).setUsed();
+						verificaID(_exprDecision);
 						verificaInicializado(_exprDecision);
 					 }
 				   OPREL { _exprDecision += _input.LT(-1).getText(); }
-				   (ID {verificaInicializado(_input.LT(-1).getText());}
+				   (ID {verificaID(_input.LT(-1).getText());
+				   		verificaInicializado(_input.LT(-1).getText());
+				   		symbolTable.get(_input.LT(-1).getText()).setUsed();
+				   	   }
 				    |
 				    NUMBER) { _exprDecision += _input.LT(-1).getText(); }
 				   FP 
@@ -213,12 +221,16 @@ cmdselecao	: 'se' AP
 			
 cmdenquanto	: 'enquanto' AP
 					     ID { 
-								_exprDecision = _input.LT(-1).getText(); 
+								 _exprDecision = _input.LT(-1).getText(); 
+								 verificaID(_exprDecision);
+								 verificaInicializado(_exprDecision);
 								 symbolTable.get(_exprDecision).setUsed();
-								 verificaInicializado(_varName);
 							 }
 					     OPREL { _exprDecision += _input.LT(-1).getText(); }
-					     (ID {verificaInicializado(_input.LT(-1).getText());}
+					     (ID {verificaID(_input.LT(-1).getText());
+					     	  verificaInicializado(_input.LT(-1).getText());
+					     	  symbolTable.get(_input.LT(-1).getText()).setUsed();
+					     	 }
 					     	|
 					      NUMBER) { _exprDecision += _input.LT(-1).getText(); }
 					     FP 
@@ -232,6 +244,43 @@ cmdenquanto	: 'enquanto' AP
 	           				stack.peek().add(cmd);
 						 }
 			  ;
+
+cmdswitch : 'escolha' AP {listaCases = new ArrayList<String>();
+						  switchCommands = new ArrayList<ArrayList<AbstractCommand>>();
+						 }
+					  ID {
+					  	 _exprDecision = _input.LT(-1).getText();
+					  	 verificaID(_exprDecision);
+					  	 verificaInicializado(_exprDecision);
+						 symbolTable.get(_exprDecision).setUsed();
+						 _tipo = getSymbolType(_exprDecision);
+					  }
+					  FP
+					  ACH
+					  'caso'
+					  	(ID {verificaID(_input.LT(-1).getText());
+					     	  verificaInicializado(_input.LT(-1).getText());
+					     	  symbolTable.get(_input.LT(-1).getText()).setUsed();
+					     	 }
+					  	 | NUMBER | STR) {listaCases.add(_input.LT(-1).getText());}
+					  	 DD {curThread = new ArrayList<AbstractCommand>();
+               	 			 stack.push(curThread);}
+               	 		 (cmd)+
+               	 		  	{switchCommands.add(stack.pop());}
+					  ('caso'
+					  	(ID {verificaID(_input.LT(-1).getText());
+					     	  verificaInicializado(_input.LT(-1).getText());
+					     	  symbolTable.get(_input.LT(-1).getText()).setUsed();
+					     	}
+					     | NUMBER | STR) {listaCases.add(_input.LT(-1).getText());}
+					     DD {curThread = new ArrayList<AbstractCommand>();
+               	 			 stack.push(curThread);}
+               	 		(cmd)+ {switchCommands.add(stack.pop());})*
+					  FCH {
+					  	CommandEscolha cmd = new CommandEscolha(_exprDecision, listaCases, switchCommands);
+					  	stack.peek().add(cmd);
+					  }
+			;
 			
 expr		: termo {
 				_exprTipo = _termoTipo;
@@ -282,6 +331,9 @@ FP	: ')'
 	;
 
 SC	: ';'
+	;
+	
+DD	: ':'
 	;
 	
 OP	: '+' | '-' | '*' | '/'
