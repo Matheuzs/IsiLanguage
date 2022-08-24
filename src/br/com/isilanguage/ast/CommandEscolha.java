@@ -18,12 +18,12 @@ public class CommandEscolha extends AbstractCommand {
 		StringBuilder str = new StringBuilder();
 		str.append("switch (" + escolhaID + ") {\n");
 		for(int i = 0; i < comandosCasos.size(); i++) {
-			str.append("case " + casos.get(i) + ":\n");
+			str.append("\tcase " + casos.get(i) + ":\n");
 			for (AbstractCommand cmd: comandosCasos.get(i)) {
-				str.append(cmd.generateJavaCode());
+				str.append("\t\t" + cmd.generateJavaCode());
+				str.append("\n");
 			}
-			str.append("\n");
-			str.append("break;\n");
+			str.append("\t\tbreak;\n");
 		}
 		str.append("}");
 		return str.toString();

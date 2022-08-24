@@ -1,51 +1,47 @@
 programa
 
-	numero b, a;
-	booleano isx;
-	texto  t1, t2, t3, t4;
 	
-	t1 = "oi";
-	t2 = "tudo";
-	t3 = "bem";
-	t4 = "com";
+	booleano loop;
+	texto t;
+	numero a, b, resultado;
 	
-	isx = falso;
-	
-	se (verdadeiro) {
-		escreva("sou verdadeiro");
-	}
-	
-	a = 1;
-	b = 2;
-	
-	se (a > b) {
-		escreva(a);
-	} senao {
-		escreva(b);
-	}
-	
-	t1 = "teste";
+	loop = verdadeiro;
+	t = "0";
 
-	escreva(a);
-	escreva(b);
+	escreva("Digite dois numeros");
+	escreva("Primeiro numero ");
+	leia(a);
+	escreva("Segundo numero ");
+	leia(b);
 	
-	escolha (t4) {
-		caso "oi":
-			t1 = t2 + t3;
-			escreva(t1);
-		caso "tudo":
-			a = a + 1;
-			escreva(a);
-		caso "bem":
-			b = b + 1;
-			escreva(b);
-		caso "com":
-			a = a + b;
+	enquanto(loop) {
+		escreva("Escolha uma operacao de acordo com o numero");
+		escreva("1 soma");
+		escreva("2 subtracao");
+		escreva("3 multiplicacao");
+		escreva("4 divisao");
+		escreva("5 sair");
+		
+		leia(t);
+		
+		escolha(t) {
+			caso "1":
+				resultado = a + b;
+				escreva(resultado);
+			caso "2":
+				resultado = a - b;
+				escreva(resultado);
+			caso "3":
+				resultado = a * b;
+				escreva(resultado);
+			caso "4":
+				resultado = a / b;
+				escreva(resultado);
+			caso "5":
+				loop = falso;
+		}
 	}
 	
-	enquanto ( isx ) {
-		escreva(a);
-		a = a + 1;
-	}
+	escreva("Obrigado pelo projeto");
 	
 fimprog;

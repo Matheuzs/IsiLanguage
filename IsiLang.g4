@@ -22,6 +22,7 @@ grammar IsiLang;
 	private int _receiverTipo;
 	private int _termoTipo;
 	private int _exprTipo;
+	private String _savedValue;
 	private String _varName;
 	private String _varValue;
 	private IsiSymbolTable symbolTable = new IsiSymbolTable();
@@ -197,13 +198,13 @@ cmdselecao	: 'se' AP
 				   		symbolTable.get(_input.LT(-1).getText()).setUsed();
 				   	   }
 				    |
-				    NUMBER) { _exprDecision += _input.LT(-1).getText(); })
+				    NUMBER | STR) { _savedValue = _exprDecision + _input.LT(-1).getText(); })
 				    
-				    | BOOLEAN {_exprDecision = _input.LT(-1).getText();}
+				    | BOOLEAN {_savedValue = _input.LT(-1).getText();}
 				    | ID {verificaID(_input.LT(-1).getText());
 				   			verificaInicializado(_input.LT(-1).getText());
 				   			symbolTable.get(_input.LT(-1).getText()).setUsed();
-				   			_exprDecision = _input.LT(-1).getText();
+				   			_savedValue = _input.LT(-1).getText();
 				   			_tipo = getSymbolType(_input.LT(-1).getText());
 				   			if (_tipo != IsiVariable.BOOLEAN) {
 				   				throw new IsiSemanticException("Symbol \"" + _input.LT(-1).getText() + "\" cannot be used as boolean");
@@ -228,7 +229,7 @@ cmdselecao	: 'se' AP
 			  	FCH {
 	           		listaFalse = stack.pop();
 			  	}
-			  )? {	CommandDecisao cmd = new CommandDecisao(_exprDecision, listaTrue, listaFalse);
+			  )? {	CommandDecisao cmd = new CommandDecisao(_savedValue, listaTrue, listaFalse);
 	           		stack.peek().add(cmd);}
 			;
 			
@@ -246,13 +247,13 @@ cmdenquanto	: 'enquanto' AP
 					   		symbolTable.get(_input.LT(-1).getText()).setUsed();
 					   	   }
 					    |
-					    NUMBER) { _exprDecision += _input.LT(-1).getText(); })
+					    NUMBER | STR) { _savedValue = _exprDecision + _input.LT(-1).getText(); })
 					    
-					    | BOOLEAN {_exprDecision = _input.LT(-1).getText();}
+					    | BOOLEAN {_savedValue = _input.LT(-1).getText();}
 					    | ID {verificaID(_input.LT(-1).getText());
 					   			verificaInicializado(_input.LT(-1).getText());
 					   			symbolTable.get(_input.LT(-1).getText()).setUsed();
-					   			_exprDecision = _input.LT(-1).getText();
+					   			_savedValue = _input.LT(-1).getText();
 					   			_tipo = getSymbolType(_input.LT(-1).getText());
 					   			if (_tipo != IsiVariable.BOOLEAN) {
 					   				throw new IsiSemanticException("Symbol \"" + _input.LT(-1).getText() + "\" cannot be used as boolean");
@@ -265,7 +266,7 @@ cmdenquanto	: 'enquanto' AP
 						 }
 						 (cmd)+ 
 						 FCH {
-						 	CommandEnquanto cmd = new CommandEnquanto(_exprDecision, stack.pop());
+						 	CommandEnquanto cmd = new CommandEnquanto(_savedValue, stack.pop());
 	           				stack.peek().add(cmd);
 						 }
 			  ;
@@ -351,7 +352,7 @@ termo		: ID {
 			_exprContent += _input.LT(-1).getText(); 
 			}
 			;
-
+		
 AP	: '('
 	;
 
@@ -383,16 +384,16 @@ FCH	: '}'
 	
 OPREL	: '>' | '<' | '>=' | '<=' | '==' | '!='
 		;
-		
+
 BOOLEAN : 'verdadeiro' | 'falso'
 		;
+
+STR: ASP ([a-z] | [A-Z] | [0-9]) ([a-z] | [A-Z] | [0-9] | WS)* ASP;
 
 ID	: [a-z] ([a-z] | [A-Z] | [0-9])*
 	;
 	
 NUMBER	: [0-9]+ ('.' [0-9]+)?
 		;
-
-STR: ASP ([a-z] | [A-Z]) ([a-z] | [A-Z] | [0-9] | WS)+ ASP;
 		
 WS	: (' ' | '\t' | '\n' | '\r') -> skip;
