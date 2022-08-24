@@ -1,43 +1,51 @@
 programa
 
 	numero b, a;
-	texto  t1;
-	texto  t2;
-	texto  t3;
+	booleano isx;
+	texto  t1, t2, t3, t4;
 	
-	leia(t1);
-	leia(t2);
-	leia(t3);
-	leia(a);
-	leia(b);
+	t1 = "oi";
+	t2 = "tudo";
+	t3 = "bem";
+	t4 = "com";
+	
+	isx = falso;
+	
+	se (verdadeiro) {
+		escreva("sou verdadeiro");
+	}
+	
+	a = 1;
+	b = 2;
+	
+	se (a > b) {
+		escreva(a);
+	} senao {
+		escreva(b);
+	}
+	
+	t1 = "teste";
 
-	
 	escreva(a);
 	escreva(b);
 	
-	escolha (a) {
-		caso 1:
+	escolha (t4) {
+		caso "oi":
 			t1 = t2 + t3;
 			escreva(t1);
-		caso 2:
+		caso "tudo":
 			a = a + 1;
 			escreva(a);
-		caso 3:
+		caso "bem":
 			b = b + 1;
 			escreva(b);
-		caso 4:
+		caso "com":
 			a = a + b;
 	}
 	
-	enquanto ( b > a ) {
+	enquanto ( isx ) {
 		escreva(a);
-		a = 3;
-	}
-	
-	se ( t1 > t2 ) {
-		escreva(t1);
-	} senao {
-		escreva(t2);
+		a = a + 1;
 	}
 	
 fimprog;

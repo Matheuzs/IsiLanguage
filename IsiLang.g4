@@ -112,6 +112,7 @@ declaravar	: tipo ID {
 			
 tipo	: 'numero' { _tipo = IsiVariable.NUMBER; }
 		| 'texto' { _tipo = IsiVariable.TEXT; }
+		| 'booleano' { _tipo = IsiVariable.BOOLEAN; }
 		;
 		
 bloco	: 
@@ -147,12 +148,12 @@ cmdleitura	: 'leia' AP
 			;
 			
 cmdescrita	: 'escreva' AP
-						ID { 
+						(ID { 
 							verificaID(_input.LT(-1).getText());
 							verificaInicializado(_input.LT(-1).getText());
 							_writeID = _input.LT(-1).getText();
 							symbolTable.get(_writeID).setUsed();
-						}
+						} | STR {_writeID = _input.LT(-1).getText();})
 						FP
 						SC
 				{
@@ -182,8 +183,9 @@ cmdattrib:
 		stack.peek().add(cmd);
 	};
 			
-cmdselecao	: 'se' AP 
-				   ID { 
+cmdselecao	: 'se' AP
+				   (
+				   (ID { 
 						_exprDecision = _input.LT(-1).getText(); 
 						symbolTable.get(_exprDecision).setUsed();
 						verificaID(_exprDecision);
@@ -195,7 +197,18 @@ cmdselecao	: 'se' AP
 				   		symbolTable.get(_input.LT(-1).getText()).setUsed();
 				   	   }
 				    |
-				    NUMBER) { _exprDecision += _input.LT(-1).getText(); }
+				    NUMBER) { _exprDecision += _input.LT(-1).getText(); })
+				    
+				    | BOOLEAN {_exprDecision = _input.LT(-1).getText();}
+				    | ID {verificaID(_input.LT(-1).getText());
+				   			verificaInicializado(_input.LT(-1).getText());
+				   			symbolTable.get(_input.LT(-1).getText()).setUsed();
+				   			_exprDecision = _input.LT(-1).getText();
+				   			_tipo = getSymbolType(_input.LT(-1).getText());
+				   			if (_tipo != IsiVariable.BOOLEAN) {
+				   				throw new IsiSemanticException("Symbol \"" + _input.LT(-1).getText() + "\" cannot be used as boolean");
+				   			}}
+				    )
 				   FP 
 				   ACH {
 				   	curThread = new ArrayList<AbstractCommand>();
@@ -204,6 +217,7 @@ cmdselecao	: 'se' AP
 				   (cmd)+ 
 				   FCH {
 				   	listaTrue = stack.pop();
+				   	listaFalse = new ArrayList<AbstractCommand>();
 				   }
 			  ('senao' 
 			  	ACH {
@@ -213,26 +227,37 @@ cmdselecao	: 'se' AP
 			  	(cmd)+
 			  	FCH {
 	           		listaFalse = stack.pop();
-	           		CommandDecisao cmd = new CommandDecisao(_exprDecision, listaTrue, listaFalse);
-	           		stack.peek().add(cmd);
 			  	}
-			  )?
+			  )? {	CommandDecisao cmd = new CommandDecisao(_exprDecision, listaTrue, listaFalse);
+	           		stack.peek().add(cmd);}
 			;
 			
 cmdenquanto	: 'enquanto' AP
-					     ID { 
-								 _exprDecision = _input.LT(-1).getText(); 
-								 verificaID(_exprDecision);
-								 verificaInicializado(_exprDecision);
-								 symbolTable.get(_exprDecision).setUsed();
-							 }
-					     OPREL { _exprDecision += _input.LT(-1).getText(); }
-					     (ID {verificaID(_input.LT(-1).getText());
-					     	  verificaInicializado(_input.LT(-1).getText());
-					     	  symbolTable.get(_input.LT(-1).getText()).setUsed();
-					     	 }
-					     	|
-					      NUMBER) { _exprDecision += _input.LT(-1).getText(); }
+					    (
+					   (ID { 
+							_exprDecision = _input.LT(-1).getText(); 
+							symbolTable.get(_exprDecision).setUsed();
+							verificaID(_exprDecision);
+							verificaInicializado(_exprDecision);
+						 }
+					   OPREL { _exprDecision += _input.LT(-1).getText(); }
+					   (ID {verificaID(_input.LT(-1).getText());
+					   		verificaInicializado(_input.LT(-1).getText());
+					   		symbolTable.get(_input.LT(-1).getText()).setUsed();
+					   	   }
+					    |
+					    NUMBER) { _exprDecision += _input.LT(-1).getText(); })
+					    
+					    | BOOLEAN {_exprDecision = _input.LT(-1).getText();}
+					    | ID {verificaID(_input.LT(-1).getText());
+					   			verificaInicializado(_input.LT(-1).getText());
+					   			symbolTable.get(_input.LT(-1).getText()).setUsed();
+					   			_exprDecision = _input.LT(-1).getText();
+					   			_tipo = getSymbolType(_input.LT(-1).getText());
+					   			if (_tipo != IsiVariable.BOOLEAN) {
+					   				throw new IsiSemanticException("Symbol \"" + _input.LT(-1).getText() + "\" cannot be used as boolean");
+					   			}}
+						    )
 					     FP 
 					     ACH {
 					   		curThread = new ArrayList<AbstractCommand>();
@@ -313,6 +338,11 @@ termo		: ID {
 				_termoTipo = IsiVariable.TEXT;
 			}
 			|
+			BOOLEAN {
+				_exprContent += _input.LT(-1).getText();
+				_termoTipo = IsiVariable.BOOLEAN;
+			}
+			|
 			AP { 
 			_exprContent += _input.LT(-1).getText(); 
 			}
@@ -352,6 +382,9 @@ FCH	: '}'
 	;
 	
 OPREL	: '>' | '<' | '>=' | '<=' | '==' | '!='
+		;
+		
+BOOLEAN : 'verdadeiro' | 'falso'
 		;
 
 ID	: [a-z] ([a-z] | [A-Z] | [0-9])*

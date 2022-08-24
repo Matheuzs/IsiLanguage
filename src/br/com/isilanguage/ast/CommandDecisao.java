@@ -9,7 +9,13 @@ public class CommandDecisao extends AbstractCommand {
 	private ArrayList<AbstractCommand> listaFalse;
 	
 	public CommandDecisao(String condition, ArrayList<AbstractCommand> lt, ArrayList<AbstractCommand> lf) {
-		this.condition = condition;
+		if (condition.equals("verdadeiro")) {
+			this.condition = "true";
+		} else if (condition.equals("falso")) {
+			this.condition = "false";
+		} else {
+			this.condition = condition;
+		}
 		this.listaTrue = lt;
 		this.listaFalse = lf;
 	}

@@ -8,7 +8,13 @@ public class CommandEnquanto extends AbstractCommand {
 	private ArrayList<AbstractCommand> commands;
 	
 	public CommandEnquanto(String condition, ArrayList<AbstractCommand> commands) {
-		this.condition = condition;
+		if (condition.equals("verdadeiro")) {
+			this.condition = "true";
+		} else if (condition.equals("falso")) {
+			this.condition = "false";
+		} else {
+			this.condition = condition;
+		}
 		this.commands = commands;
 	}
 

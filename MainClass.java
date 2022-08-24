@@ -2,37 +2,44 @@ import java.util.Scanner;
 public class MainClass{ 
   public static void main(String args[]){
        Scanner _key = new Scanner(System.in);
+String t4;
 double a;
 double b;
 String t1;
 String t2;
+boolean isx;
 String t3;
-t1 = _key.nextLine();
-t2 = _key.nextLine();
-t3 = _key.nextLine();
-a = _key.nextDouble();
-b = _key.nextDouble();
+t1 = "oi";
+t2 = "tudo";
+t3 = "bem";
+t4 = "com";
+isx = false;
+if (true) {
+System.out.println("sou verdadeiro");}
+a = 1;
+b = 2;
+if (a>b) {
+System.out.println(a);}else {
+System.out.println(b);}
+
+t1 = "teste";
 System.out.println(a);
 System.out.println(b);
-switch (a) {
-case 1:
+switch (t4) {
+case "oi":
 t1 = t2+t3;System.out.println(t1);
 break;
-case 2:
+case "tudo":
 a = a+1;System.out.println(a);
 break;
-case 3:
+case "bem":
 b = b+1;System.out.println(b);
 break;
-case 4:
+case "com":
 a = a+b;
 break;
 }
-while(b>a) {
-	System.out.println(a);	a = 3;}
-
-if (t1>t2) {
-System.out.println(t1);}else {
-System.out.println(t2);}
+while(isx) {
+	System.out.println(a);	a = a+1;}
 
   }}

@@ -12,6 +12,11 @@ public class CommandAtribuicao extends AbstractCommand {
 	
 	@Override
 	public String generateJavaCode() {
+		if (expr.equals("verdadeiro")) {
+			this.expr = "true";
+		} else if (expr.equals("falso")) {
+			this.expr = "false";
+		}
 		return id + " = " + expr + ";";
 	}
 
