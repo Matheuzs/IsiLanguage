@@ -6,7 +6,7 @@
 | Daniel Espindola da Silva          | 11201720556 |
 | Victor Hugo Zaninette Bernardino   | 11201811443 |
 | Lincoln Aparecido Sobral Santos    | 11201811301 |
-|                                    |             |
+| Larissa Nunes de Almeida           | 11201920559 |
 
 # Checklist:
 
@@ -20,7 +20,7 @@
 - [X] Verificar se há variáveis declaradas e não-utilizadas (warning);  
 - [X] Geração de pelo menos 1 linguagem destino (C/Java/Python);
 
-----------------------------------------------------
+------------------------------------------------------
 
 Elementos adicionais
 - [X] Mais tipos de dados (Booleano)
