@@ -27,3 +27,4 @@ Elementos adicionais
 - [X] Nova instrução para Switch/Case (escolha/caso)
 
 # Video Explicativo:
+https://www.youtube.com/watch?v=bNCaV-YUTuY
